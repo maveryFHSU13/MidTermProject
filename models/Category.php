@@ -1,10 +1,10 @@
 <?php
-    class Author {
+    class Category {
         private $conn;
-        private $table = 'authors';
+        private $table = 'categories';
 
         public $id;
-        public $author;
+        public $category;
 
         public function __construct($database){
             $this->conn = $database->connect();
@@ -37,18 +37,18 @@
 
         public function create($data) {
             $createQuery = ' INSERT INTO ' . $this->table . '
-            (id, author) VALUES 
-            ((SELECT setval(\'authors_id_seq\', 
-            (SELECT MAX(id) FROM authors)+1)), :author)';
+            (id, category) VALUES 
+            ((SELECT setval(\'categories_id_seq\', 
+            (SELECT MAX(id) FROM categories)+1)), :category)';
 
             $stmt = $this->conn->prepare($createQuery);
 
             //clean data 
             
-            $this->author = htmlspecialchars(strip_tags($this->author));
+            $this->category = htmlspecialchars(strip_tags($this->category));
 
             //bind data
-            $stmt->bindValue(":author", $data["author"], PDO::PARAM_STR);
+            $stmt->bindValue(":category", $data["category"], PDO::PARAM_STR);
             
 
             //execute 
@@ -63,12 +63,12 @@
         }
         public function update($data){
             $updateQuery = 'UPDATE ' . $this->table . '
-            SET author = :author 
+            SET category = :category 
             WHERE id = :id';
 
             $stmt = $this->conn->prepare($updateQuery);
-            //$this->author = htmlspecialchars(strip_tags($this->author));
-            $stmt->bindValue(":author", $data["author"], PDO::PARAM_STR);
+            $this->category = htmlspecialchars(strip_tags($this->category));
+            $stmt->bindValue(":category", $data["category"], PDO::PARAM_STR);
             $stmt->bindValue(":id", $data["id"], PDO::PARAM_INT);
 
             if($stmt->execute()){

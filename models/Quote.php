@@ -1,20 +1,30 @@
 <?php
-    class Author {
+    class Quote {
         private $conn;
-        private $table = 'authors';
+        private $table = 'quotes';
+
+        private $joinQuery ='SELECT q.id, q.quote, a.author,c.category
+        FROM quotes q
+        INNER JOIN authors a
+        ON q.author_id = a.id
+        INNER JOIN categories c
+        ON q.category_id = c.id';
+        
 
         public $id;
-        public $author;
+        public $quote;
+        public $author_id;
+        public  $category_id;
 
         public function __construct($database){
             $this->conn = $database->connect();
         }
 
         public function getAll(){
-            //create query for all records
-            $queryAll = 'SELECT * FROM ' . $this->table . ' ORDER BY id';
+            //use query for all records with join
+           
             //prepare query
-            $stmt = $this->conn->prepare($queryAll);
+            $stmt = $this->conn->prepare($this->joinQuery);
             //execute query
             $stmt->execute();
             //return the query.
@@ -22,8 +32,8 @@
 
         }
         public function read_single($id){
-            $querySingle = 'SELECT * FROM ' . $this->table . '
-            WHERE id = :id 
+            $querySingle = $this->joinQuery . '
+            WHERE q.id = :id 
             LIMIT 1';
             $stmt = $this->conn->prepare($querySingle);
 
@@ -37,18 +47,20 @@
 
         public function create($data) {
             $createQuery = ' INSERT INTO ' . $this->table . '
-            (id, author) VALUES 
-            ((SELECT setval(\'authors_id_seq\', 
-            (SELECT MAX(id) FROM authors)+1)), :author)';
+            (id, quote, author_id, category_id) VALUES 
+            ((SELECT setval(\'quotes_id_seq\', 
+            (SELECT MAX(id) FROM quotes)+1)), :quote, :author_id, :category_id)';
 
             $stmt = $this->conn->prepare($createQuery);
 
             //clean data 
             
-            $this->author = htmlspecialchars(strip_tags($this->author));
+            //$this->quote = htmlspecialchars(strip_tags($this->category));
 
             //bind data
-            $stmt->bindValue(":author", $data["author"], PDO::PARAM_STR);
+            $stmt->bindValue(":quote", $data["quote"], PDO::PARAM_STR);
+            $stmt->bindValue(":author_id", $data["author_id"], PDO::PARAM_INT);
+            $stmt->bindValue(":category_id", $data["category_id"], PDO::PARAM_INT);
             
 
             //execute 
@@ -63,12 +75,17 @@
         }
         public function update($data){
             $updateQuery = 'UPDATE ' . $this->table . '
-            SET author = :author 
+            SET quote = :quote,
+            author_id = :author_id,
+            category_id = :category_id
+
             WHERE id = :id';
 
             $stmt = $this->conn->prepare($updateQuery);
-            //$this->author = htmlspecialchars(strip_tags($this->author));
-            $stmt->bindValue(":author", $data["author"], PDO::PARAM_STR);
+            //$this->category = htmlspecialchars(strip_tags($this->category));
+            $stmt->bindValue(":quote", $data["quote"], PDO::PARAM_STR);
+            $stmt->bindValue(":author_id", $data["author_id"], PDO::PARAM_INT);
+            $stmt->bindValue(":category_id", $data["category_id"], PDO::PARAM_INT);
             $stmt->bindValue(":id", $data["id"], PDO::PARAM_INT);
 
             if($stmt->execute()){
