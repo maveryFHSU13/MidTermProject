@@ -16,7 +16,7 @@ include_once '../../models/Author.php';
             }else {
 
                 $author_arr = array();
-                $author_arr['data'] = array();
+                //$author_arr['data'] = array();
           
                 while($row = $results->fetch(PDO::FETCH_ASSOC)) {
                   extract($row);
@@ -27,7 +27,7 @@ include_once '../../models/Author.php';
                   );
           
                   // Push to "data"
-                  array_push($author_arr['data'], $author_item);
+                  array_push($author_arr, $author_item);
                 }
           
                 // Turn to JSON & output

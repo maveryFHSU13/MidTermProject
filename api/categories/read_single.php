@@ -16,7 +16,7 @@ include_once '../../models/Category.php';
             }else {
 
                 $category_arr = array();
-                $category_arr['data'] = array();
+                //$category_arr['data'] = array();
           
                 while($row = $results->fetch(PDO::FETCH_ASSOC)) {
                   extract($row);
@@ -27,7 +27,7 @@ include_once '../../models/Category.php';
                   );
           
                   // Push to "data"
-                  array_push($category_arr['data'], $category_item);
+                  array_push($category_arr, $category_item);
                 }
           
                 // Turn to JSON & output

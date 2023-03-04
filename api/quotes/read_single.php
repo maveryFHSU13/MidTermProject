@@ -16,7 +16,7 @@ include_once '../../models/Quote.php';
             }else {
 
                 $quote_arr = array();
-                $quote_arr['data'] = array();
+                //$quote_arr['data'] = array();
           
                 while($row = $results->fetch(PDO::FETCH_ASSOC)) {
                   extract($row);
@@ -29,7 +29,7 @@ include_once '../../models/Quote.php';
                   );
           
                   // Push to "data"
-                  array_push($quote_arr['data'], $quote_item);
+                  array_push($quote_arr, $quote_item);
                 }
           
                 // Turn to JSON & output
