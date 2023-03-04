@@ -15,20 +15,20 @@
             
             if($num > 0){
                 $quote_arr = array();
-                $quote_arr['data'] = array();
+                
           
                 while($row = $results->fetch(PDO::FETCH_ASSOC)) {
                   extract($row);
-          
+                /*
                   $quote_item = array(
                     'id' => $id,
                     'quote' => $quote,
                     'author' => $author,
                     'category' => $category
                   );
-          
+                  */
                   // Push to "data"
-                  array_push($quote_arr['data'], $quote_item);
+                  array_push($quote_arr, ['id'=>$id, 'quote'=>$quote, 'author'=>$author, 'category'=>$category]);
                 }
           
                 // Turn to JSON & output

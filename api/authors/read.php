@@ -33,14 +33,10 @@
           
                 while($row = $results->fetch(PDO::FETCH_ASSOC)) {
                   extract($row);
+                   
+                  array_push($author_arr, ['id'=> $id, 'author' => $author]);
           
-                  $author_item = array(
-                    'id' => $id,
-                    'author' => $author
-                  );
-          
-                  // Push to "data"
-                  array_push($author_arr, $author_item);
+                  
                 }
           
                 // Turn to JSON & output

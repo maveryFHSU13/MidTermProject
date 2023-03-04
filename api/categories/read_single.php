@@ -21,13 +21,13 @@ include_once '../../models/Category.php';
                 while($row = $results->fetch(PDO::FETCH_ASSOC)) {
                   extract($row);
           
-                  $category_item = array(
+                  $category_arr = array(
                     'id' => $id,
                     'category' => $category
                   );
           
                   // Push to "data"
-                  array_push($category_arr, $category_item);
+                  //array_push($category_arr, $category_item);
                 }
           
                 // Turn to JSON & output
