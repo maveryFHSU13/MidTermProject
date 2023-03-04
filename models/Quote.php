@@ -33,11 +33,10 @@
         }
         public function read_single($id){
             $querySingle = $this->joinQuery . '
-            WHERE q.id = :id 
-            LIMIT 1';
+            WHERE ' . $id;
             $stmt = $this->conn->prepare($querySingle);
 
-            $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+            //$stmt->bindValue(":id", $id, PDO::PARAM_INT);
 
             $stmt->execute();
 
