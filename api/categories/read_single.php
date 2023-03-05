@@ -10,7 +10,7 @@ include_once '../../models/Category.php';
             $results = $this->gateway->read_single($id);
             
             if($results->rowCount() == 0){
-                http_response_code(404);
+                //http_response_code(404);
                 echo json_encode(["message" => 'category_id Not Found']);
                 exit;
             }else {
