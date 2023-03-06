@@ -39,7 +39,7 @@
             $createQuery = ' INSERT INTO ' . $this->table . '
             (id, category) VALUES 
             ((SELECT setval(\'categories_id_seq\', 
-            (SELECT MAX(id) FROM categories)+1)), :category)';
+            (SELECT MAX(id) FROM categories)+1)), :category) RETURNING id, category';
 
             $stmt = $this->conn->prepare($createQuery);
 
@@ -53,7 +53,7 @@
 
             //execute 
             if($stmt->execute()){
-                return true;
+                return $stmt;
                 
             }
 

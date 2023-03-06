@@ -1,26 +1,12 @@
 <?php
-    include_once '../../config/Database.php';
+    
     include_once '../../models/Author.php';
 
     class Read {
         public function __construct(private Author $gateway){
 
         }
-        /*
-        public function processRequest(string $method, ?string $id): void
-        {
-            if ($id) {
-                
-                //$this->processResourceRequest($method, $id);
-                echo "ids";
-                
-            } else {
-                
-                $this->processAllRequest($method);
-                
-            }
-        }
-        */
+        
         public function allRequest($method){
             $results = $this->gateway->getAll();
             //echo json_encode($this->gateway->getAll());

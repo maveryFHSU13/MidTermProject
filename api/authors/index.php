@@ -9,10 +9,7 @@
     header('Access-Control-Allow-Origin: *');
     header('Content-Type: application/json');
     $method = $_SERVER['REQUEST_METHOD'];
-   
-    
 
-   
     if ($method === 'OPTIONS') {
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
         header('Access-Control-Allow-Headers: Origin, Accept, Content-Type, X-Requested-With');
@@ -25,52 +22,28 @@
         case "GET":
             if(isset($_GET['id']) ){
                 $id = $_GET['id'];
-                
-                processRequest($_SERVER["REQUEST_METHOD"], $id, NULL);
+                processSingle($method, $id);   
             }else {
-                $id = null;                
-                processRequest($_SERVER["REQUEST_METHOD"], $id, NULL);
+                processAll($method);
             }
             break;
         case "POST":
-            processRequest($_SERVER["REQUEST_METHOD"], NULL, NULL);      
+            processAll($method);
+        
             break;
         case "PUT":
-            $author = null;
             $id = null;
-            processSingle($_SERVER["REQUEST_METHOD"], $id, $author);
+            processSingle($_SERVER["REQUEST_METHOD"], $id);
             break;
-        case "DELETE":
-            $author = null;
+        case "DELETE":            
             $id = null;
-            processSingle($_SERVER["REQUEST_METHOD"], $id, $author);
+            processSingle($_SERVER["REQUEST_METHOD"], $id);
             break;
 
 
     }
-    
-    
-    
-    
-       
 
-    function processRequest(string $method, ?string $id, ?string $author): void
-        {
-            if ($id) {
-                
-                processSingle($method, $id, $author);
-                //echo "ids";
-                
-            } else {
-
-                processAll($method, $author);
-                
-                //$controller->allRequest($method);
-                
-            }
-        }
-
-    function processAll($method, $author){
+    function processAll($method){
         $database = new Database();
         $gateway = new Author($database);
         switch($method){
@@ -86,7 +59,7 @@
 
         }
     }
-    function processSingle($method, $id, $author){
+    function processSingle($method, $id){
         $database = new Database();
         $gateway = new Author($database);
         switch($method){
@@ -97,19 +70,11 @@
             case "PUT":
                 $controller = new Update($gateway);
                 $data = (array) json_decode(file_get_contents("php://input"));
-                if(!$data) {
-                    echo json_encode(["message" => 'Missing Required Parameters']);
-                    break;
-                }
                 $controller->update($data);
                 break;
             case "DELETE":
                 $controller = new Delete($gateway);
                 $data = (array) json_decode(file_get_contents("php://input"));
-                if(!$data) {
-                    echo json_encode(["message" => 'Missing Required Parameters']);
-                    break;
-                }
                 $controller->delete($data);
                 break;
 

@@ -20,11 +20,9 @@
 
             
             
-            if($this->gateway->create($quote)){                
-            echo json_encode(array('message' => 'quote Created'));
-            }else {
-                echo json_encode(array('message' => 'quote not created'));
-            }
+            $results = $this->gateway->create($quote);
+            $idrecord = $results->fetch(PDO::FETCH_ASSOC);
+            echo json_encode($idrecord);
 
            
 

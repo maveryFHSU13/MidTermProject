@@ -48,7 +48,8 @@
             $createQuery = ' INSERT INTO ' . $this->table . '
             (id, quote, author_id, category_id) VALUES 
             ((SELECT setval(\'quotes_id_seq\', 
-            (SELECT MAX(id) FROM quotes)+1)), :quote, :author_id, :category_id)';
+            (SELECT MAX(id) FROM quotes)+1)), :quote, :author_id, :category_id)
+            RETURNING id, quote, author_id, category_id';
 
             $stmt = $this->conn->prepare($createQuery);
 
@@ -64,7 +65,7 @@
 
             //execute 
             if($stmt->execute()){
-                return true;
+                return $stmt;
                 
             }
 

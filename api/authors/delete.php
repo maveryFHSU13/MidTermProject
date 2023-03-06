@@ -6,6 +6,11 @@
         }
         public function delete($data){
 
+            if(!array_key_exists('id', $data)){
+                echo json_encode(["message" => 'Missing Required Parameters']);
+                exit;
+            }
+
             
             if($this->gateway->delete($data)){                
                 echo json_encode(array('message' => 'Author Deleted'));
