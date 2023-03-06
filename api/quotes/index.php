@@ -27,21 +27,22 @@
                 $id = 'q.id = ' . $_GET['id'];
                 
                 processRequest($_SERVER["REQUEST_METHOD"], $id, NULL);
-            }elseif(isset($_GET['authorId']) && isset($_GET['categoryId'])) {
-                $id = 'q.author_id = ' . $_GET['authorId'] . ' AND q.category_id = ' .
-                $_GET['categoryId'];
+            }elseif(isset($_GET['author_id']) && isset($_GET['category_id'])) {
+                $id = 'q.author_id = ' . $_GET['author_id'] . ' AND q.category_id = ' .
+                $_GET['category_id'];
                 
                 processRequest($_SERVER["REQUEST_METHOD"], $id, NULL);
-            }elseif(isset($_GET['authorId'])) {
-                $id = 'q.author_id = ' . $_GET['authorId'];
-                               
-                processRequest($_SERVER["REQUEST_METHOD"], $id, NULL);
-            }elseif(isset($_GET['categoryId'])){
-                $id = 'q.category_id = ' . $_GET['categoryId'];
+            }elseif(isset($_GET['author_id'])) {
+                $id = 'q.author_id = ' . $_GET['author_id'];
                               
+                processRequest($_SERVER["REQUEST_METHOD"], $id, NULL);
+            }elseif(isset($_GET['category_id'])){
+                $id = 'q.category_id = ' . $_GET['category_id'];
+                             
                 processRequest($_SERVER["REQUEST_METHOD"], $id, NULL);
             }else{
                 $id = null;
+                
                 processRequest($_SERVER["REQUEST_METHOD"], $id, NULL);
             }
             break;

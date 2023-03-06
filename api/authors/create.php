@@ -20,11 +20,19 @@
 
             //$data = json_decode(file_get_contents("php://input"));
             
-            if($this->gateway->create($author)){                
+            $results = $this->gateway->create($author);
+            $idrecord = $results->fetch(PDO::FETCH_ASSOC);
+            echo json_encode([$idrecord]);
+
+            /*  
+            if($this->gateway->create($author)){ 
+                
+                               
             echo json_encode(array('message' => 'Author Created'));
             }else {
                 echo json_encode(array('message' => 'Author not created'));
             }
+            */
 
            
 

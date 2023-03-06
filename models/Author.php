@@ -39,7 +39,7 @@
             $createQuery = ' INSERT INTO ' . $this->table . '
             (id, author) VALUES 
             ((SELECT setval(\'authors_id_seq\', 
-            (SELECT MAX(id) FROM authors)+1)), :author)';
+            (SELECT MAX(id) FROM authors)+1)), :author) RETURNING id, author';
 
             $stmt = $this->conn->prepare($createQuery);
 
@@ -49,11 +49,12 @@
 
             //bind data
             $stmt->bindValue(":author", $data["author"], PDO::PARAM_STR);
-            
+           
 
             //execute 
             if($stmt->execute()){
-                return true;
+                
+                return $stmt;
                 
             }
 

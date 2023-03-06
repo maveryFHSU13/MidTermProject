@@ -11,25 +11,17 @@ include_once '../../models/Quote.php';
             
             if($results->rowCount() == 0){
                 //http_response_code(404);
-                echo json_encode(["message" => 'quote_id Not Found']);
+                echo json_encode(["message" => 'No Quotes Found']);
                 exit;
             }else {
 
                 $quote_arr = array();
-                //$quote_arr['data'] = array();
+                
           
                 while($row = $results->fetch(PDO::FETCH_ASSOC)) {
                   extract($row);
-          
-                  $quote_arr = array(
-                    'id' => $id,
-                    'quote' => $quote,
-                    'author' => $author,
-                    'category' => $category
-                  );
-          
-                  // Push to "data"
-                  //array_push($quote_arr, $quote_item);
+                  
+                  array_push($quote_arr, ['id'=>$id, 'quote'=>$quote, 'author'=>$author, 'category'=>$category]);
                 }
           
                 // Turn to JSON & output
