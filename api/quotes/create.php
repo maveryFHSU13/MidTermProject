@@ -25,9 +25,11 @@
             
             $results = $this->gateway->create($quote);
             if($results == 1){
-                echo json_encode(["message" => 'category_id Not Found']);
+                $noCategory = ["message" => 'category_id Not Found'];
+                echo json_encode($noCategory);
             }elseif($results == 2){
-                echo json_encode(["message" => 'author_id Not Found']);
+                $noAuthor = ["message" => 'author_id Not Found'];
+                echo json_encode($noAuthor);
             }elseif($results){
                 $idrecord = $results->fetch(PDO::FETCH_ASSOC);
                 echo json_encode($idrecord);

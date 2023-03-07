@@ -20,7 +20,8 @@
 
             $results = $this->gateway->create($category);
             $idrecord = $results->fetch(PDO::FETCH_ASSOC);
-            echo json_encode($idrecord);
+            $objReturn = json_encode($idrecord);
+            echo $objReturn;
 
         }
         

@@ -10,8 +10,8 @@ include_once '../../models/Quote.php';
             $results = $this->gateway->read_single($id);
             
             if($results->rowCount() == 0){
-                
-                echo json_encode(["message" => 'No Quotes Found']);
+                $noRecords = ["message" => 'No Quotes Found'];
+                echo json_encode($noRecords);
                 exit;
             }else {
 
@@ -27,11 +27,10 @@ include_once '../../models/Quote.php';
                             'author'=>$author, 
                             'category'=>$category
                         );
-                }else{
-                 
-                  array_push($quote_arr, ['id'=>$id, 'quote'=>$quote,
-                   'author'=>$author, 'category'=>$category]);
-                }
+                    }else{                 
+                        array_push($quote_arr, ['id'=>$id, 'quote'=>$quote,
+                        'author'=>$author, 'category'=>$category]);
+                    }
                 }
           
                 // Turn to JSON & output
