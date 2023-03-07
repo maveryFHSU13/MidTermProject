@@ -39,13 +39,13 @@
             $createQuery = ' INSERT INTO ' . $this->table . '
             (id, author) VALUES 
             ((SELECT setval(\'authors_id_seq\', 
-            (SELECT MAX(id) FROM authors)+1)), :author) RETURNING id, author';
+            (SELECT MAX(id) FROM authors)+1)), :author) RETURNING id::text, author';
 
             $stmt = $this->conn->prepare($createQuery);
 
             //clean data 
             
-            $this->author = htmlspecialchars(strip_tags($this->author));
+            //$this->author = htmlspecialchars(strip_tags($this->author));
 
             //bind data
             $stmt->bindValue(":author", $data["author"], PDO::PARAM_STR);
@@ -87,7 +87,7 @@
 
             $stmt = $this->conn->prepare($deleteQuery);
             $stmt->bindValue(":id", $data["id"], PDO::PARAM_INT);
-            
+
             if($stmt->execute()){
                 if($stmt->rowCount() === 0){
                     return false;
