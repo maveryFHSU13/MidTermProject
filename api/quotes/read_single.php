@@ -11,7 +11,7 @@ include_once '../../models/Quote.php';
             
             if($results->rowCount() == 0){
                 
-                echo json_encode(['message' => 'No Quotes Found']);
+                echo json_encode(["message" => 'No Quotes Found']);
                 exit;
             }else {
 
@@ -19,9 +19,19 @@ include_once '../../models/Quote.php';
                 
           
                 while($row = $results->fetch(PDO::FETCH_ASSOC)) {
-                  extract($row);
-                  
-                  array_push($quote_arr, ['id'=>$id, 'quote'=>$quote, 'author'=>$author, 'category'=>$category]);
+                    extract($row);
+                    if($results->rowCount() == 1){
+                        $quote_arr = array(
+                            'id'=>$id,
+                            'quote'=>$quote, 
+                            'author'=>$author, 
+                            'category'=>$category
+                        );
+                }else{
+                 
+                  array_push($quote_arr, ['id'=>$id, 'quote'=>$quote,
+                   'author'=>$author, 'category'=>$category]);
+                }
                 }
           
                 // Turn to JSON & output

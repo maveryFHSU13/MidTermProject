@@ -57,15 +57,12 @@
                 return $stmt;
                 
             }
-
-            //print error if something goes wrong
-            printf("Error: %s.\n", $stmt->error);
-            return false;
+            
         }
         public function update($data){
             $updateQuery = 'UPDATE ' . $this->table . '
             SET author = :author 
-            WHERE id = :id';
+            WHERE id = :id RETURNING id, author';
 
             $stmt = $this->conn->prepare($updateQuery);
             //$this->author = htmlspecialchars(strip_tags($this->author));
@@ -76,7 +73,7 @@
                 if($stmt->rowCount() === 0){
                     return false;
                 }
-                return true;
+                return $stmt;
                 
             }
             //print error if something goes wrong

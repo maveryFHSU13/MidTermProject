@@ -13,11 +13,14 @@
             }
             
             
-            if($this->gateway->update($data)){                
-                echo json_encode(array('message' => 'Author Updated'));
-                }else {
-                    echo json_encode(array('message' => 'author_id Not Found'));
-                }
+            $results = $this->gateway->update($data);
+            if(!$results){
+                echo json_encode(["message" => 'author_id Not Found']);
+                exit;
+            }
+
+            $idrecord = $results->fetch(PDO::FETCH_ASSOC);
+            echo json_encode($idrecord);
 
         }
 

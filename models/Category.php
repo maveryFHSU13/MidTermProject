@@ -64,7 +64,7 @@
         public function update($data){
             $updateQuery = 'UPDATE ' . $this->table . '
             SET category = :category 
-            WHERE id = :id';
+            WHERE id = :id RETURNING id, category';
 
             $stmt = $this->conn->prepare($updateQuery);
             $this->category = htmlspecialchars(strip_tags($this->category));
@@ -75,7 +75,7 @@
                 if($stmt->rowCount() === 0){
                     return false;
                 }
-                return true;
+                return $stmt;
                 
             }
             //print error if something goes wrong
