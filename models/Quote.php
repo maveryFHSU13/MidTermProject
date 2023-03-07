@@ -107,7 +107,7 @@
             }catch(PDOException $e){
                 if($e->getCode()==='23503') {
                     $str = $e->getMessage();
-                    echo $str;
+                    
                     $categoryPattern = '/category_id/';
                     $authorPattern = '/author_id/';
                     if(preg_match($categoryPattern, $str)){
