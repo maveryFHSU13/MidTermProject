@@ -10,8 +10,8 @@ include_once '../../models/Quote.php';
             $results = $this->gateway->read_single($id);
             
             if($results->rowCount() == 0){
-                //http_response_code(404);
-                echo json_encode(["message" => 'No Quotes Found']);
+                
+                echo json_encode(['message' => 'No Quotes Found']);
                 exit;
             }else {
 

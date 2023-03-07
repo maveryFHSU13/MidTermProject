@@ -16,72 +16,46 @@
         exit();
     }
    
-    
+    $database = new Database();
+    $gateway = new Author($database);
     
     switch ($method){
         case "GET":
             if(isset($_GET['id']) ){
                 $id = $_GET['id'];
-                processSingle($method, $id);   
+                //processSingle($method, $id);
+                $controller = new Read_Single($gateway);
+                $controller->singleRequest($method, $id);   
             }else {
-                processAll($method);
+                //processAll($method);
+                $controller = new Read($gateway);
+                $controller->allRequest($method);
             }
             break;
         case "POST":
-            processAll($method);
+            $controller = new Create($gateway);
+            $data = (array) json_decode(file_get_contents("php://input"));
+            $controller->create($data);
+            
+            //processAll($method);
         
             break;
         case "PUT":
-            $id = null;
-            processSingle($_SERVER["REQUEST_METHOD"], $id);
+            $controller = new Update($gateway);
+            $data = (array) json_decode(file_get_contents("php://input"));
+            $controller->update($data);
+            //$id = null;
+            //processSingle($_SERVER["REQUEST_METHOD"], $id);
             break;
-        case "DELETE":            
-            $id = null;
-            processSingle($_SERVER["REQUEST_METHOD"], $id);
+        case "DELETE":
+            $controller = new Delete($gateway);
+            $data = (array) json_decode(file_get_contents("php://input"));
+            $controller->delete($data);            
+            //$id = null;
+            //processSingle($_SERVER["REQUEST_METHOD"], $id);
             break;
-
-
     }
-
-    function processAll($method){
-        $database = new Database();
-        $gateway = new Author($database);
-        switch($method){
-            case "GET":
-                $controller = new Read($gateway);
-                $controller->allRequest($method);
-                break;
-            case "POST":                
-                $controller = new Create($gateway);
-                $data = (array) json_decode(file_get_contents("php://input"));
-                $controller->create($data);
-                break;
-
-        }
-    }
-    function processSingle($method, $id){
-        $database = new Database();
-        $gateway = new Author($database);
-        switch($method){
-            case "GET":
-                $controller = new Read_Single($gateway);
-                $controller->singleRequest($method, $id);
-                break;
-            case "PUT":
-                $controller = new Update($gateway);
-                $data = (array) json_decode(file_get_contents("php://input"));
-                $controller->update($data);
-                break;
-            case "DELETE":
-                $controller = new Delete($gateway);
-                $data = (array) json_decode(file_get_contents("php://input"));
-                $controller->delete($data);
-                break;
-
-        }
-
-
-    }
+    
 
 
 ?>

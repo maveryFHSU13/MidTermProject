@@ -37,7 +37,7 @@
           } else {
                 // No quotes
                 echo json_encode(
-                  array('message' => 'No quotes Found')
+                  array('message' => 'No Quotes Found')
                 );
             }
            

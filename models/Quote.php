@@ -21,10 +21,8 @@
         }
 
         public function getAll(){
-            //use query for all records with join
-           
-            //prepare query
-            $stmt = $this->conn->prepare($this->joinQuery);
+            $returnAll = $this->joinQuery . ' ORDER BY q.id';
+            $stmt = $this->conn->prepare($returnAll);
             //execute query
             $stmt->execute();
             //return the query.
@@ -33,10 +31,10 @@
         }
         public function read_single($id){
             $querySingle = $this->joinQuery . '
-            WHERE ' . $id;
+            WHERE ' . $id . ' ORDER BY q.id';
             $stmt = $this->conn->prepare($querySingle);
 
-            //$stmt->bindValue(":id", $id, PDO::PARAM_INT);
+            
 
             $stmt->execute();
 
@@ -64,14 +62,25 @@
             
 
             //execute 
-            if($stmt->execute()){
-                return $stmt;
-                
+            try {
+                if($stmt->execute()){
+                    return $stmt;
+                    
+                }
+            }catch(PDOException $e){
+                if($e->getCode()==='23503') {
+                    $str = $e->getMessage();
+                    $categoryPattern = '/category_id/';
+                    $authorPattern = '/author_id/';
+                    if(preg_match($categoryPattern, $str)){
+                        return 1;
+                    }
+                    else{
+                        return 2;
+                    }
+                }
+                //return false;
             }
-
-            //print error if something goes wrong
-            printf("Error: %s.\n", $stmt->error);
-            return false;
         }
         public function update($data){
             $updateQuery = 'UPDATE ' . $this->table . '
@@ -88,17 +97,31 @@
             $stmt->bindValue(":category_id", $data["category_id"], PDO::PARAM_INT);
             $stmt->bindValue(":id", $data["id"], PDO::PARAM_INT);
 
-            if($stmt->execute()){
-                if($stmt->rowCount() === 0){
-                    return false;
+            try{                
+                if($stmt->execute()){
+                    if($stmt->rowCount() === 0){
+                        return false;
+                    }
+                    return $stmt;                
                 }
-                return true;
+            }catch(PDOException $e){
+                if($e->getCode()==='23503') {
+                    $str = $e->getMessage();
+                    echo $str;
+                    $categoryPattern = '/category_id/';
+                    $authorPattern = '/author_id/';
+                    if(preg_match($categoryPattern, $str)){
+                        return 1;
+                    }
+                    elseif(preg_match($authorPattern, $str)){
+                        return 2;
+                    }else{
+                        return 3;
+                    }
+                }
                 
             }
-            //print error if something goes wrong
-            printf("Error: %s.\n", $stmt->error);
-            return false;
-
+            
         }
         public function delete($data){
             $deleteQuery = 'DELETE FROM ' . $this->table . '

@@ -6,7 +6,8 @@
         }
         public function update($data){
 
-            if(!array_key_exists('id', $data) || $data['id']==''){
+            if(!array_key_exists('id', $data) || $data['id']=='' ||
+             !array_key_exists('author', $data) || $data['author']==''){
                 echo json_encode(["message" => 'Missing Required Parameters']);
                 exit;
             }

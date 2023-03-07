@@ -5,6 +5,11 @@
 
         }
         public function update($data){
+            if(!array_key_exists('id', $data) || $data['id']=='' ||
+             !array_key_exists('category', $data) || $data['category']==''){
+                echo json_encode(["message" => 'Missing Required Parameters']);
+                exit;
+            }
 
             
             if($this->gateway->update($data)){                

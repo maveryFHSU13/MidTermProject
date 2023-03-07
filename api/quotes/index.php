@@ -9,84 +9,61 @@
     header('Access-Control-Allow-Origin: *');
     header('Content-Type: application/json');
     $method = $_SERVER['REQUEST_METHOD'];
-   
-    
 
-   
     if ($method === 'OPTIONS') {
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
         header('Access-Control-Allow-Headers: Origin, Accept, Content-Type, X-Requested-With');
         exit();
     }
    
-    
+    $database = new Database();
+    $gateway = new Quote($database);
     
     switch ($method){
         case "GET":
             if(isset($_GET['id']) ){
-                $id = 'q.id = ' . $_GET['id'];
-                
-                processRequest($_SERVER["REQUEST_METHOD"], $id, NULL);
+                $id = 'q.id = ' . $_GET['id'];                
+                $controller = new Read_Single($gateway);
+                $controller->singleRequest($method, $id);
             }elseif(isset($_GET['author_id']) && isset($_GET['category_id'])) {
                 $id = 'q.author_id = ' . $_GET['author_id'] . ' AND q.category_id = ' .
-                $_GET['category_id'];
-                
-                processRequest($_SERVER["REQUEST_METHOD"], $id, NULL);
+                $_GET['category_id'];                
+                $controller = new Read_Single($gateway);
+                $controller->singleRequest($method, $id);
             }elseif(isset($_GET['author_id'])) {
-                $id = 'q.author_id = ' . $_GET['author_id'];
-                              
-                processRequest($_SERVER["REQUEST_METHOD"], $id, NULL);
+                $id = 'q.author_id = ' . $_GET['author_id'];                              
+                $controller = new Read_Single($gateway);
+                $controller->singleRequest($method, $id);
             }elseif(isset($_GET['category_id'])){
-                $id = 'q.category_id = ' . $_GET['category_id'];
-                             
-                processRequest($_SERVER["REQUEST_METHOD"], $id, NULL);
+                $id = 'q.category_id = ' . $_GET['category_id'];                             
+                $controller = new Read_Single($gateway);
+                $controller->singleRequest($method, $id);
             }else{
-                $id = null;
-                
-                processRequest($_SERVER["REQUEST_METHOD"], $id, NULL);
+                $controller = new Read($gateway);
+                $controller->allRequest($method);
             }
             break;
         case "POST":
-            processRequest($_SERVER["REQUEST_METHOD"], NULL, NULL);      
+            $controller = new Create($gateway);
+            $data = (array) json_decode(file_get_contents("php://input"));
+            $controller->create($data);      
             break;
-        case "PUT":
-            $quote = null;
-            $id = null;
-            processSingle($_SERVER["REQUEST_METHOD"], $id, $quote);
+        case "PUT":            
+            $controller = new Update($gateway);
+            $data = (array) json_decode(file_get_contents("php://input"));
+            $controller->update($data);
             break;
-        case "DELETE":
-            $quote = null;
-            $id = null;
-            processSingle($_SERVER["REQUEST_METHOD"], $id, $quote);
+        case "DELETE":            
+            $controller = new Delete($gateway);
+            $data = (array) json_decode(file_get_contents("php://input"));
+            $controller->delete($data);
             break;
-
 
     }
-    
-    
-    
-    
-       
-
-    function processRequest(string $method, ?string $id, ?string $quote): void
-        {
-            if ($id) {
-                
-                processSingle($method, $id, $quote);
-                //echo "ids";
-                
-            } else {
-
-                processAll($method, $quote);
-                
-                //$controller->allRequest($method);
-                
-            }
-        }
-
-    function processAll($method, $quote){
-        $database = new Database();
-        $gateway = new Quote($database);
+   
+    /*
+    function processAll($method){
+        
         switch($method){
             case "GET":
                 $controller = new Read($gateway);
@@ -100,7 +77,7 @@
 
         }
     }
-    function processSingle($method, $id, $quote){
+    function processSingle($method, $id){
         $database = new Database();
         $gateway = new Quote($database);
         switch($method){
@@ -111,26 +88,18 @@
             case "PUT":
                 $controller = new Update($gateway);
                 $data = (array) json_decode(file_get_contents("php://input"));
-                if(!$data) {
-                    echo json_encode(["message" => 'Missing Required Parameters']);
-                    break;
-                }
                 $controller->update($data);
                 break;
             case "DELETE":
                 $controller = new Delete($gateway);
                 $data = (array) json_decode(file_get_contents("php://input"));
-                if(!$data) {
-                    echo json_encode(["message" => 'Missing Required Parameters']);
-                    break;
-                }
                 $controller->delete($data);
                 break;
 
         }
 
 
-    }
+    } */
 
 
 ?>

@@ -13,7 +13,10 @@
         }
         public function create($quote){
            
-            if(!$quote){
+            if(!array_key_exists('quote', $quote) || 
+            !array_key_exists('author_id', $quote) || 
+            !array_key_exists('category_id', $quote) ||
+            $quote['quote']==""){
                 echo json_encode(["message" => 'Missing Required Parameters']);
                 exit;
             }
@@ -21,8 +24,19 @@
             
             
             $results = $this->gateway->create($quote);
-            $idrecord = $results->fetch(PDO::FETCH_ASSOC);
-            echo json_encode($idrecord);
+            if($results == 1){
+                echo json_encode(["message" => 'category_id Not Found']);
+            }elseif($results == 2){
+                echo json_encode(["message" => 'author_id Not Found']);
+            }elseif($results){
+                $idrecord = $results->fetch(PDO::FETCH_ASSOC);
+                echo json_encode($idrecord);
+            }
+            else{
+                echo json_encode(["message" => 'Missing Required Parameters']);
+                exit;
+            }
+            
 
            
 
