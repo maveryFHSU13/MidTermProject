@@ -67,7 +67,7 @@
             WHERE id = :id RETURNING id, category';
 
             $stmt = $this->conn->prepare($updateQuery);
-            $this->category = htmlspecialchars(strip_tags($this->category));
+            //$this->category = htmlspecialchars(strip_tags($this->category));
             $stmt->bindValue(":category", $data["category"], PDO::PARAM_STR);
             $stmt->bindValue(":id", $data["id"], PDO::PARAM_INT);
 
