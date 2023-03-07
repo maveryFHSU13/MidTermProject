@@ -12,11 +12,16 @@
             }
 
             
-            if($this->gateway->delete($data)){                
-                echo json_encode(array('message' => 'Author Deleted'));
-                }else {
-                    echo json_encode(array('message' => 'author_id Not Found'));
-                }
+            $results = $this->gateway->delete($data);
+            if($results == false){
+                $noRecords = ["message" => 'author_id Not Found'];
+                echo json_encode($noRecords);
+                exit;
+            }
+            
+            $idrecord = $results->fetch(PDO::FETCH_ASSOC);
+            $objReturn = json_encode($idrecord);
+            echo $objReturn;
 
         }
 

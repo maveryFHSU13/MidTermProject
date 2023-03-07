@@ -23,7 +23,9 @@
             elseif(!$results){
                 echo json_encode(["message" => 'No Quotes Found']);
             }elseif($results){
-                echo json_encode(array('message' => 'Quote Updated'));
+                $idrecord = $results->fetch(PDO::FETCH_ASSOC);
+                $objReturn = json_encode($idrecord);
+                echo $objReturn;
             }
             else{
                 echo json_encode(["message" => 'Missing Required Parameters']);

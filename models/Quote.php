@@ -88,7 +88,7 @@
             author_id = :author_id,
             category_id = :category_id
 
-            WHERE id = :id';
+            WHERE id = :id RETURNING id, quote, author_id, category_id';
 
             $stmt = $this->conn->prepare($updateQuery);
             //$this->category = htmlspecialchars(strip_tags($this->category));
@@ -125,10 +125,11 @@
         }
         public function delete($data){
             $deleteQuery = 'DELETE FROM ' . $this->table . '
-            WHERE id = :id RETURN id';
+            WHERE id = :id RETURNING id';
 
             $stmt = $this->conn->prepare($deleteQuery);
             $stmt->bindValue(":id", $data["id"], PDO::PARAM_INT);
+
             if($stmt->execute()){
                 if($stmt->rowCount() === 0){
                     return false;

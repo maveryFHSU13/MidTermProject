@@ -83,10 +83,11 @@
         }
         public function delete($data){
             $deleteQuery = 'DELETE FROM ' . $this->table . '
-            WHERE id = :id RETURNIND id';
+            WHERE id = :id RETURNING id';
 
             $stmt = $this->conn->prepare($deleteQuery);
             $stmt->bindValue(":id", $data["id"], PDO::PARAM_INT);
+            
             if($stmt->execute()){
                 if($stmt->rowCount() === 0){
                     return false;
