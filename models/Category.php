@@ -45,7 +45,7 @@
 
             //clean data 
             
-            $this->category = htmlspecialchars(strip_tags($this->category));
+            //$this->category = htmlspecialchars(strip_tags($this->category));
 
             //bind data
             $stmt->bindValue(":category", $data["category"], PDO::PARAM_STR);
