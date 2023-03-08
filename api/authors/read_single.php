@@ -40,4 +40,5 @@ include_once '../../models/Author.php';
             
         }
     }
+    exit();//exit out to prevent multiple attempts
 ?>

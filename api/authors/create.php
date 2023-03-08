@@ -29,10 +29,7 @@
             echo $objReturn;
 
         }
-        
-
-
-
     }
+    exit();//exit out to prevent multiple attempts
 
 ?>

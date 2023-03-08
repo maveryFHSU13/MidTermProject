@@ -1,6 +1,8 @@
 <?php
 
 include_once '../../models/Category.php';
+    //Gateway is the Category.php - for all queries
+    //this is controller for error checking and response back to client
 
     class Read_Single{
         public function __construct(private Category $gateway){
@@ -10,14 +12,14 @@ include_once '../../models/Category.php';
             $results = $this->gateway->read_single($id);
             
             if($results->rowCount() == 0){
-                //http_response_code(404);
+                //if no rows return send error
                 echo json_encode(["message" => 'category_id Not Found']);
                 exit;
             }else {
 
                 $category_arr = array();
-                //$category_arr['data'] = array();
-          
+                //create array
+                //add row to new array
                 while($row = $results->fetch(PDO::FETCH_ASSOC)) {
                   extract($row);
           
@@ -25,9 +27,7 @@ include_once '../../models/Category.php';
                     'id' => $id,
                     'category' => $category
                   );
-          
-                  // Push to "data"
-                  //array_push($category_arr, $category_item);
+                           
                 }
           
                 // Turn to JSON & output
@@ -37,4 +37,5 @@ include_once '../../models/Category.php';
             
         }
     }
+    exit();//exit out to prevent multiple attempts
 ?>

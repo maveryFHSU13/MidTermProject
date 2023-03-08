@@ -20,8 +20,8 @@
     $gateway = new Quote($database);
     
     switch ($method){
-        case "GET":
-            if(isset($_GET['id']) ){
+        case "GET":  //check what is in the get request - make that part of query
+            if(isset($_GET['id']) ){ //for id only
                 $id = 'q.id = ' . $_GET['id'];                
                 $controller = new Read_Single($gateway);
                 $controller->singleRequest($method, $id);
@@ -30,30 +30,30 @@
                 $_GET['category_id'];                
                 $controller = new Read_Single($gateway);
                 $controller->singleRequest($method, $id);
-            }elseif(isset($_GET['author_id'])) {
+            }elseif(isset($_GET['author_id'])) { //for author id only
                 $id = 'q.author_id = ' . $_GET['author_id'];                              
                 $controller = new Read_Single($gateway);
                 $controller->singleRequest($method, $id);
-            }elseif(isset($_GET['category_id'])){
+            }elseif(isset($_GET['category_id'])){  //for cateogry id only
                 $id = 'q.category_id = ' . $_GET['category_id'];                             
                 $controller = new Read_Single($gateway);
                 $controller->singleRequest($method, $id);
-            }else{
+            }else{  //return all
                 $controller = new Read($gateway);
                 $controller->allRequest($method);
             }
             break;
-        case "POST":
+        case "POST": //get contents as an array
             $controller = new Create($gateway);
             $data = (array) json_decode(file_get_contents("php://input"));
             $controller->create($data);      
             break;
-        case "PUT":            
+        case "PUT": //get contents as an array           
             $controller = new Update($gateway);
             $data = (array) json_decode(file_get_contents("php://input"));
             $controller->update($data);
             break;
-        case "DELETE":            
+        case "DELETE": //get contents as an array          
             $controller = new Delete($gateway);
             $data = (array) json_decode(file_get_contents("php://input"));
             $controller->delete($data);
@@ -61,45 +61,7 @@
 
     }
    
-    /*
-    function processAll($method){
-        
-        switch($method){
-            case "GET":
-                $controller = new Read($gateway);
-                $controller->allRequest($method);
-                break;
-            case "POST":                
-                $controller = new Create($gateway);
-                $data = (array) json_decode(file_get_contents("php://input"));
-                $controller->create($data);
-                break;
-
-        }
-    }
-    function processSingle($method, $id){
-        $database = new Database();
-        $gateway = new Quote($database);
-        switch($method){
-            case "GET":
-                $controller = new Read_Single($gateway);
-                $controller->singleRequest($method, $id);
-                break;
-            case "PUT":
-                $controller = new Update($gateway);
-                $data = (array) json_decode(file_get_contents("php://input"));
-                $controller->update($data);
-                break;
-            case "DELETE":
-                $controller = new Delete($gateway);
-                $data = (array) json_decode(file_get_contents("php://input"));
-                $controller->delete($data);
-                break;
-
-        }
-
-
-    } */
+    
 
 
 ?>

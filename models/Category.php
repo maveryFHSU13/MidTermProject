@@ -1,4 +1,5 @@
 <?php
+//Create Category class - this will act as the gateway for all queries
     class Category {
         private $conn;
         private $table = 'categories';
@@ -16,9 +17,13 @@
             //prepare query
             $stmt = $this->conn->prepare($queryAll);
             //execute query
-            $stmt->execute();
-            //return the query.
-            return $stmt;            
+            try {
+                $stmt->execute();
+                return $stmt;
+                    
+            }catch(PDOException $e){
+                return false;
+            }           
 
         }
         public function read_single($id){
@@ -29,9 +34,13 @@
 
             $stmt->bindValue(":id", $id, PDO::PARAM_INT);
 
-            $stmt->execute();
-
-            return $stmt;
+            try {
+                $stmt->execute();
+                return $stmt;
+                    
+            }catch(PDOException $e){
+                return false;
+            }
 
         }
 
@@ -43,23 +52,16 @@
 
             $stmt = $this->conn->prepare($createQuery);
 
-            //clean data 
-            
-            //$this->category = htmlspecialchars(strip_tags($this->category));
-
             //bind data
             $stmt->bindValue(":category", $data["category"], PDO::PARAM_STR);
-            
-
             //execute 
-            if($stmt->execute()){
+            try {
+                $stmt->execute();
                 return $stmt;
-                
+                    
+            }catch(PDOException $e){
+                return false;
             }
-
-            //print error if something goes wrong
-            printf("Error: %s.\n", $stmt->error);
-            return false;
         }
         public function update($data){
             $updateQuery = 'UPDATE ' . $this->table . '
@@ -71,16 +73,17 @@
             $stmt->bindValue(":category", $data["category"], PDO::PARAM_STR);
             $stmt->bindValue(":id", $data["id"], PDO::PARAM_INT);
 
-            if($stmt->execute()){
+            try {
+                $stmt->execute();
                 if($stmt->rowCount() === 0){
                     return false;
                 }
                 return $stmt;
-                
+                    
+            }catch(PDOException $e){
+                return false;
+
             }
-            //print error if something goes wrong
-            printf("Error: %s.\n", $stmt->error);
-            return false;
 
         }
         public function delete($data){
@@ -89,17 +92,18 @@
 
             $stmt = $this->conn->prepare($deleteQuery);
             $stmt->bindValue(":id", $data["id"], PDO::PARAM_INT);
-            if($stmt->execute()){
+            //execute
+            try {
+                $stmt->execute();
                 if($stmt->rowCount() === 0){
                     return false;
                 }
                 return $stmt;
-                
-            }
-            //print error if something goes wrong
-            printf("Error: %s.\n", $stmt->error);
-            return false;
+                    
+            }catch(PDOException $e){
+                return false;
 
+            }
         }
     }
 

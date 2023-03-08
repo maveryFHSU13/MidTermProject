@@ -1,5 +1,5 @@
 <?php 
-
+    //Database class to make the connection using getenv varialbes
     class Database {
         private $host;
         private $dbname;
@@ -20,9 +20,10 @@
               return $this->conn;
       
             }else {
-            
+            //create the connection
             $dsn = "pgsql:host={$this->host};port={$this->port};dbname={$this->dbname}";
-      
+            
+            //try and connnect if not reqport error
             try { 
               $this->conn = new PDO($dsn, $this->username, $this->password);
               
