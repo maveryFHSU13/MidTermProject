@@ -14,7 +14,8 @@ Make the following API request - GET, POST, PUT, and DELETE
 
 Here are various examples
 
-Request: Response:
-/quotes/ All quotes are returned
-/quotes/?id=4 The specific quote
-/quotes/?author_id=3&category_id=4 All quotes from authorId=3 that are in categoryId=4
+| Request:                           | Response:                                           |
+| ---------------------------------- | --------------------------------------------------- |
+| /quotes/                           | All quotes are returned                             |
+| /quotes/?id=4                      | The specific quote                                  |
+| /quotes/?author_id=3&category_id=4 | All quotes from authorId=3 that are in categoryId=4 |
