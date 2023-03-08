@@ -37,5 +37,5 @@ include_once '../../models/Category.php';
             
         }
     }
-    exit();//exit out to prevent multiple attempts
+   
 ?>

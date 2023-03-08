@@ -45,5 +45,5 @@ include_once '../../models/Quote.php';
             
         }
     }
-    exit();  //exit out to prevent multiple attempts
+   
 ?>
