@@ -36,8 +36,8 @@
         }
         public function read_single($id){
             //for get single request 
-            $querySingle = $this->joinQuery . '
-            WHERE ' . $id . ' ORDER BY q.id';
+            $querySingle = 'SELECT * FROM (' . $this->joinQuery . $id;
+            
             $stmt = $this->conn->prepare($querySingle);
 
             //execute query 
